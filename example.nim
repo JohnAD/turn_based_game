@@ -1,12 +1,9 @@
 # game of bones example
 #
-from turn_based_game import Game, Human_Player_Console
-
-type
-  GameOfBones ref object of Game
-
-
+import turn_based_game
 
 # Start a match
-game = GameOfBones( [ Human_Player_Console, Human_Player_Console ] )
-history = game.play()
+let game = newGame( @[GenericPlayer(name: "PlayerOne"), GenericPlayer(name: "PlayerTwo")] )
+var history = game.play()
+echo "history:"
+echo history
