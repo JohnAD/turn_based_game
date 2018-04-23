@@ -11,7 +11,7 @@ import strutils
 
 type
 
-  Game = ref object of RootObj
+  Game* = ref object of RootObj
     player_count*: int
     players*: seq[GenericPlayer]
     current_player*: int
@@ -25,7 +25,7 @@ type
 
 # the following prototype is needed to allow mutual recursion of methods
 #   It is properly defined later.
-method possible_moves(self: Game): seq[string]
+method possible_moves(self: Game): seq[string] {.base.}
 
 
 ## ## ## #######################################
@@ -34,10 +34,10 @@ method possible_moves(self: Game): seq[string]
 ## 
 ## ######################################
 
-method display(self: GenericPlayer, msg: string) =
+method display(self: GenericPlayer, msg: string) {.base.} =
     echo $msg
 
-method get_move(self: GenericPlayer, game: Game): string = 
+method get_move(self: GenericPlayer, game: Game): string {.base.} = 
   while true:
     echo ""
     echo "It is $#'s turn.".format([self.name])
@@ -50,6 +50,7 @@ method get_move(self: GenericPlayer, game: Game): string =
       return response
     if response == "quit":
       return "___quit___"
+    echo "BAD ENTRY. Try again."
 
 ## #######################################
 ## 
@@ -58,30 +59,30 @@ method get_move(self: GenericPlayer, game: Game): string =
 ## ######################################
 
 
-method possible_moves(self: Game): seq[string] =
+method possible_moves(self: Game): seq[string] {.base.} =
   var limit = 2
   if self.pile < 3:
     limit = self.pile - 1
   @["1", "2", "3"][0..limit]
 
 
-method current(self: Game) : GenericPlayer =
+method current(self: Game) : GenericPlayer {.base.} =
   self.players[self.current_player - 1]
 
 
-method winner(self: Game) : GenericPlayer =
+method winner(self: Game) : GenericPlayer {.base.} =
   self.players[self.winner_player - 1]
 
 
-method next_player(self: Game): int =
+method next_player(self: Game): int {.base.} =
   (self.current_player %% self.player_count) + 1
 
 
-method finish_turn(self: Game) =
+method finish_turn(self: Game) {.base.} =
   self.current_player = self.next_player()
 
 
-method make_move(self: Game, move: string): string =
+method make_move(self: Game, move: string): string {.base.} =
   var count = move.parseInt()
   self.pile -= count  # remove bones.
   if self.pile <= 0:
@@ -89,21 +90,29 @@ method make_move(self: Game, move: string): string =
   return "$# bones removed.".format([count])
 
 
-method is_over(self: Game): bool =
+method is_over(self: Game): bool {.base.} =
   self.winner_player > 0
 
 
-method status(self: Game): string =
+method status(self: Game): string {.base.} =
   "$# bones left in the pile" .format([self.pile])
 
 
-method scoring(self: Game): int =
+method scoring(self: Game): int {.base.} =
   if self.winner_player > 0:
     return 100
   return 0
 
 
-method play*(self: Game): seq[string] = 
+method setup*(self: Game, players: seq[GenericPlayer]) {.base.} =
+  self.player_count = 2
+  self.players = players
+  self.current_player = 1
+  self.winner_player = 0
+  self.pile = 20
+
+
+method play*(self: Game) : seq[string] {.base.} = 
   var history: seq[string] = @[]
   var move: string = ""
   while not self.is_over():
@@ -117,17 +126,3 @@ method play*(self: Game): seq[string] =
       self.current.display("winner is $#".format([self.winner.name]))
       return history
     self.current_player = self.next_player()
-
-
-proc newGame*(players: seq[GenericPlayer]): Game =
-  result = Game()
-  result.player_count = 2
-  result.players = players
-  result.current_player = 1
-  result.winner_player = 0
-
-  result.pile = 20
-  return result
-
-
-
