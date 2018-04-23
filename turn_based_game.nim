@@ -17,15 +17,13 @@ type
     current_player*: int
     winner_player*: int
 
-    pile*: int  # later make this part added
-
   GenericPLayer* = ref object of RootObj
     name*: string
 
 
 # the following prototype is needed to allow mutual recursion of methods
 #   It is properly defined later.
-method possible_moves(self: Game): seq[string] {.base.}
+method possible_moves*(self: Game): seq[string] {.base.}
 
 
 ## ## ## #######################################
@@ -59,57 +57,51 @@ method get_move(self: GenericPlayer, game: Game): string {.base.} =
 ## ######################################
 
 
-method possible_moves(self: Game): seq[string] {.base.} =
-  var limit = 2
-  if self.pile < 3:
-    limit = self.pile - 1
-  @["1", "2", "3"][0..limit]
+method possible_moves*(self: Game): seq[string] {.base.} =
+  raise newException(FieldError, "possible_moves() must be overridden")
 
 
-method current(self: Game) : GenericPlayer {.base.} =
+method current*(self: Game) : GenericPlayer {.base.} =
   self.players[self.current_player - 1]
 
 
-method winner(self: Game) : GenericPlayer {.base.} =
+method winner*(self: Game) : GenericPlayer {.base.} =
   self.players[self.winner_player - 1]
 
 
-method next_player(self: Game): int {.base.} =
+method next_player*(self: Game): int {.base.} =
   (self.current_player %% self.player_count) + 1
 
 
-method finish_turn(self: Game) {.base.} =
+method finish_turn*(self: Game) {.base.} =
   self.current_player = self.next_player()
 
 
-method make_move(self: Game, move: string): string {.base.} =
-  var count = move.parseInt()
-  self.pile -= count  # remove bones.
-  if self.pile <= 0:
-    self.winner_player = self.next_player()
-  return "$# bones removed.".format([count])
+method make_move*(self: Game, move: string): string {.base.} =
+  raise newException(FieldError, "make_move() must be overridden")
 
 
-method is_over(self: Game): bool {.base.} =
+method is_over*(self: Game): bool {.base.} =
   self.winner_player > 0
 
 
-method status(self: Game): string {.base.} =
-  "$# bones left in the pile" .format([self.pile])
+method status*(self: Game): string {.base.} =
+  raise newException(FieldError, "status() must be overridden")
 
 
-method scoring(self: Game): int {.base.} =
-  if self.winner_player > 0:
-    return 100
-  return 0
+method scoring*(self: Game): int {.base.} =
+  raise newException(FieldError, "scoring() must be overridden")
 
 
 method setup*(self: Game, players: seq[GenericPlayer]) {.base.} =
+  raise newException(FieldError, "setup() must be overridden")
+
+
+method default_setup*(self: Game, players: seq[GenericPlayer]) {.base.} =
   self.player_count = 2
   self.players = players
   self.current_player = 1
   self.winner_player = 0
-  self.pile = 20
 
 
 method play*(self: Game) : seq[string] {.base.} = 
