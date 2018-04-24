@@ -23,7 +23,7 @@ method make_move(self: GameOfBones, move: string): string =
   var count = move.parseInt()
   self.pile -= count  # remove bones.
   if self.pile <= 0:
-    self.winner_player = self.next_player()
+    self.winner_player_number = self.next_player_number()
   return "$# bones removed.".format([count])
 
 
@@ -32,7 +32,7 @@ method status(self: GameOfBones): string =
 
 
 method scoring(self: GameOfBones): int =
-  if self.winner_player > 0:
+  if self.winner_player_number > 0:
     return 100
   return 0
 

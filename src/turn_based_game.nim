@@ -1,5 +1,6 @@
-# turn_based_game module
-#
+# turn_based_game
+# Copyright John Dupuy
+# Game rules framework for turn-based games
 
 import strutils
 
@@ -14,8 +15,8 @@ type
   Game* = ref object of RootObj
     player_count*: int
     players*: seq[GenericPlayer]
-    current_player*: int
-    winner_player*: int
+    current_player_number*: int
+    winner_player_number*: int
 
   GenericPLayer* = ref object of RootObj
     name*: string
@@ -62,19 +63,19 @@ method possible_moves*(self: Game): seq[string] {.base.} =
 
 
 method current*(self: Game) : GenericPlayer {.base.} =
-  self.players[self.current_player - 1]
+  self.players[self.current_player_number - 1]
 
 
 method winner*(self: Game) : GenericPlayer {.base.} =
-  self.players[self.winner_player - 1]
+  self.players[self.winner_player_number - 1]
 
 
-method next_player*(self: Game): int {.base.} =
-  (self.current_player %% self.player_count) + 1
+method next_player_number*(self: Game): int {.base.} =
+  (self.current_player_number %% self.player_count) + 1
 
 
 method finish_turn*(self: Game) {.base.} =
-  self.current_player = self.next_player()
+  self.current_player_number = self.next_player_number()
 
 
 method make_move*(self: Game, move: string): string {.base.} =
@@ -82,7 +83,7 @@ method make_move*(self: Game, move: string): string {.base.} =
 
 
 method is_over*(self: Game): bool {.base.} =
-  self.winner_player > 0
+  self.winner_player_number > 0
 
 
 method status*(self: Game): string {.base.} =
@@ -100,8 +101,8 @@ method setup*(self: Game, players: seq[GenericPlayer]) {.base.} =
 method default_setup*(self: Game, players: seq[GenericPlayer]) {.base.} =
   self.player_count = 2
   self.players = players
-  self.current_player = 1
-  self.winner_player = 0
+  self.current_player_number = 1
+  self.winner_player_number = 0
 
 
 method play*(self: Game) : seq[string] {.base.} = 
@@ -117,4 +118,4 @@ method play*(self: Game) : seq[string] {.base.} =
     if self.is_over():
       self.current.display("winner is $#".format([self.winner.name]))
       return history
-    self.current_player = self.next_player()
+    self.current_player_number = self.next_player_number()
