@@ -11,7 +11,7 @@ A turn-based game is any game with:
 This library also assumes:
 
 * all the players are playing by the same rules
-* a single "move" is made for each players turn
+* a single "move" is made for each player's turn
     * it can be complex set of actions involving many pieces, but a single _choice_ is made for that complex set
     * the game can be written to allow "skip turn" as a valid "move"
 * the player's turn is over after the move is made and applied
@@ -36,8 +36,10 @@ And, when running from a terminal,
 #
 # Game of Thai 21 example
 #
-# decription: Twenty one flags are placed on the beach. Each player takes a turn
-# grabbing between 1 and 3 flags. The last player to grab a flag wins.
+# decription: Twenty one flags are placed on a beach. Each player takes a turn
+# removing between 1 and 3 flags. The player that removes the last remaining flag wins.
+#
+# this game was introduced by an episode of Survivor: http://survivor-org.wikia.com/wiki/21_Flags
 #
 
 import strutils
