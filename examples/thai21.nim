@@ -1,10 +1,10 @@
 #
 # Game of Thai 21 example
 #
-# description: Twenty one flags are placed on a beach. Each player takes a turn
+# Description: Twenty one flags are placed on a beach. Each player takes a turn
 # removing between 1 and 3 flags. The player that removes the last remaining flag wins.
 #
-# this game was introduced by an episode of Survivor: http://survivor-org.wikia.com/wiki/21_Flags
+# This game was introduced by an episode of Survivor: http://survivor-org.wikia.com/wiki/21_Flags
 #
 
 import strutils
@@ -27,13 +27,6 @@ method setup*(self: GameOfThai21, players: seq[Player]) =
   self.default_setup(players)
   self.pile = 21
 
-# method possible_moves(self: GameOfThai21): seq[string] =
-#   if self.pile==1:
-#     return @["1"]
-#   elif self.pile==2:
-#     return @["1", "2"]
-#   return @["1", "2", "3"]
-
 method possible_moves(self: GameOfThai21): OrderedTable[string, string] =
   if self.pile==1:
     return {"1": "Take One"}.toOrderedTable
@@ -53,6 +46,7 @@ method determine_winner(self: GameOfThai21) =
     self.winner_player_number = self.current_player_number
   return
 
+# the following method is not _required_, but makes it nicer to read
 method status(self: GameOfThai21): string =
   "$# flags available.".format([self.pile])
 
