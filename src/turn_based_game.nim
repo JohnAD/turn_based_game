@@ -3,6 +3,7 @@
 # Game rules framework for turn-based games
 
 import strutils
+import tables
 
 ## #######################################
 ## 
@@ -14,59 +15,91 @@ type
 
   Game* = ref object of RootObj
     player_count*: int
-    players*: seq[GenericPlayer]
+    players*: seq[Player]
     current_player_number*: int
     winner_player_number*: int
 
-  GenericPLayer* = ref object of RootObj
+  Player* = ref object of RootObj
     name*: string
 
+const
+  STALEMATE* = -1
+  NO_WINNER_YET* = 0
+  TAB: string = "   "
 
-# the following prototype is needed to allow mutual recursion of methods
+
+# the following prototypes are needed to allow mutual recursion of methods
 #   It is properly defined later.
-method possible_moves*(self: Game): seq[string] {.base.}
+method possible_moves_seq*(self: Game): seq[string] {.base.}
+method possible_moves*(self: Game): OrderedTable[string, string] {.base.}
+method status*(self: Game): string {.base.}
 
-
-## ## ## #######################################
+## ######################################
 ## 
-##   GenericPlayer
+##   Player
 ## 
 ## ######################################
 
-method display(self: GenericPlayer, msg: string) {.base.} =
+
+method display(self: Player, msg: string) {.base.} =
     echo $msg
 
-method get_move(self: GenericPlayer, game: Game): string {.base.} = 
+
+method get_move(self: Player, game: Game): string {.base.} = 
+  var move_list: seq[string] = @[]
+  var descriptive_move_list: OrderedTable[string, string]
+  var compact_description: bool = false
+  echo ""
+  echo "$#'s TURN".format([self.name])
+  echo ""
+  echo TAB & "Status:"
+  echo indent(game.status(), 2, TAB)
+  var temp = game.possible_moves_seq()
+  if len(temp) > 0:
+    move_list = temp
+    compact_description = true
+  else:
+    descriptive_move_list = game.possible_moves()
+    for key, value in descriptive_move_list.pairs():
+      move_list.add(key)
   while true:
-    echo ""
-    echo "It is $#'s turn.".format([self.name])
-    echo "Possible moves:"
-    var move_list = game.possible_moves()
-    echo move_list
-    echo "Enter move (or 'quit'): "
+    echo TAB & "Possible moves:"
+    if compact_description:
+      var disp = TAB & TAB
+      for key in move_list:
+        disp.add("[$#] ".format(key))
+      echo disp
+    else:
+      for key, value in descriptive_move_list.pairs():
+        echo TAB & TAB & "[$key]: $value".format("key", key, "value", value)
+    stdout.write TAB & "Enter move (or 'quit'): "
     var response = readLine(stdin)
     if response in move_list:
       return response
     if response == "quit":
-      return "___quit___"
-    echo "BAD ENTRY. Try again."
+      return nil
+    echo TAB & "BAD ENTRY. Try again."
 
-## #######################################
+## ######################################
 ## 
 ##   Game
 ## 
 ## ######################################
 
 
-method possible_moves*(self: Game): seq[string] {.base.} =
+method possible_moves_seq*(self: Game): seq[string] {.base.} =
+  @[]
+
+
+method possible_moves*(self: Game): OrderedTable[string, string] {.base.} =
   raise newException(FieldError, "possible_moves() must be overridden")
 
 
-method current*(self: Game) : GenericPlayer {.base.} =
+method current_player*(self: Game) : Player {.base.} =
   self.players[self.current_player_number - 1]
 
 
-method winner*(self: Game) : GenericPlayer {.base.} =
+method winning_player*(self: Game) : Player {.base.} =
   self.players[self.winner_player_number - 1]
 
 
@@ -83,39 +116,53 @@ method make_move*(self: Game, move: string): string {.base.} =
 
 
 method is_over*(self: Game): bool {.base.} =
-  self.winner_player_number > 0
+  self.winner_player_number != NO_WINNER_YET
 
 
 method status*(self: Game): string {.base.} =
-  raise newException(FieldError, "status() must be overridden")
+  if self.is_over():
+    return "game is over"
+  else:
+    return "game is active"
+
+
+method determine_winner(self: Game) {.base.} =
+  raise newException(FieldError, "determine_winner() must be overridden")
 
 
 method scoring*(self: Game): int {.base.} =
-  raise newException(FieldError, "scoring() must be overridden")
+  raise newException(FieldError, "scoring() must be overridden (if used)")
 
 
-method setup*(self: Game, players: seq[GenericPlayer]) {.base.} =
+method setup*(self: Game, players: seq[Player]) {.base.} =
   raise newException(FieldError, "setup() must be overridden")
 
 
-method default_setup*(self: Game, players: seq[GenericPlayer]) {.base.} =
-  self.player_count = 2
+method default_setup*(self: Game, players: seq[Player]) {.base.} =
   self.players = players
+  self.player_count = len(self.players)
   self.current_player_number = 1
   self.winner_player_number = 0
 
 
-method play*(self: Game) : seq[string] {.base.} = 
+method play*(self: Game) : seq[string] {.base discardable.} = 
   var history: seq[string] = @[]
   var move: string = ""
   while not self.is_over():
-    self.current.display(self.status())
-    move = self.current.get_move(self)
-    if move == "___quit___":
+    # when declaredInScope(self.status):
+    #   self.current_player.display(self.status())
+    move = self.current_player.get_move(self)
+    if move.isNil:
       return history
     history.add(move)
-    self.current.display(self.make_move(move))
+    self.current_player.display("")
+    self.current_player.display(TAB & self.make_move(move))
+    self.determine_winner()
     if self.is_over():
-      self.current.display("winner is $#".format([self.winner.name]))
+      self.current_player.display("")
+      if self.winner_player_number == STALEMATE:
+        self.current_player.display("STALEMATE.")
+      else:
+        self.current_player.display("WINNER IS $#".format([self.winning_player.name]))
       return history
     self.current_player_number = self.next_player_number()
