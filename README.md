@@ -32,7 +32,7 @@ And, when running from a terminal,
 
 # Quick Example
 
-```
+```nim
 #
 # Game of Thai 21 example
 #
