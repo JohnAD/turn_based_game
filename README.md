@@ -1,20 +1,20 @@
-# *turn_based_game* Framework
+# *turn_based_game* Game-rule Engine
 
 This framework encapsulates the critical information (rules) needed for playing or simulating a turn-based game.
 
-A turn-based game is any game with:
+A turn-based game is any game
 
-* two or more players
-* only one player plays at a time
-* the players take turns playing (it need not be round-robin, but that is the most common method)
+* with two or more players,
+* where only one player plays at a time, and
+* the players take turns playing (it need not be round-robin, but that is the most common method).
 
-This library also assumes:
+This library also assumes that
 
-* all the players are playing by the same rules
-* a single "move" is made for each player's turn
-    * it can be complex set of actions involving many pieces, but a single _choice_ is made for that complex set
-    * the game can be written to allow "skip turn" as a valid "move"
-* the player's turn is over after the move is made and applied
+* all the players are playing by the same rules,
+* a single "move" is made for each player's turn,
+    * (it can be complex set of actions involving many pieces, but a single _choice_ is made for that complex set)
+    * (the game can be written to allow "skip turn" as a valid "move"), and
+* the player's turn is over after the move is made.
 
 Some common turn-based games: Checkers, Reversi, Chess, Stratego, Connect 4.
 
@@ -103,3 +103,13 @@ game.setup(@[Player(name: "A"), Player(name: "B"), Player(name: "C")])
 
 game.play()
 ```
+
+# Documentation
+
+Greater documentation is being built at the wiki on this repository.
+
+Visit <https://github.com/JohnAD/turn_based_game/wiki>
+
+# Credit
+
+The code for this engine mimics that written in Python at the EasyAI library located at <https://github.com/Zulko/easyAI>. That library contains both the game rule engine (called TwoPlayerGame) as well as a variety of AI algorithms to play as game players, such as Negamax.
