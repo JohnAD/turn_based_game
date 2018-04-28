@@ -30,8 +30,9 @@ const
 
 # the following prototypes are needed to allow mutual recursion of methods
 #   It is properly defined later.
-method possible_moves_seq*(self: Game): seq[string] {.base.}
-method possible_moves*(self: Game): OrderedTable[string, string] {.base.}
+# method possible_moves_seq*(self: Game): seq[string] {.base.}
+method set_possible_moves*(self: Game, moves: var OrderedTable[string, string]) {.base.}
+method set_possible_moves*(self: Game, moves: var seq[string]) {.base.}
 method status*(self: Game): string {.base.}
 
 ## ######################################
@@ -54,12 +55,11 @@ method get_move(self: Player, game: Game): string {.base.} =
   echo ""
   echo TAB & "Status:"
   echo indent(game.status(), 2, TAB)
-  var temp = game.possible_moves_seq()
-  if len(temp) > 0:
-    move_list = temp
+  game.set_possible_moves(move_list)
+  if len(move_list) > 0:
     compact_description = true
   else:
-    descriptive_move_list = game.possible_moves()
+    game.set_possible_moves(descriptive_move_list)
     for key, value in descriptive_move_list.pairs():
       move_list.add(key)
   while true:
@@ -87,11 +87,11 @@ method get_move(self: Player, game: Game): string {.base.} =
 ## ######################################
 
 
-method possible_moves_seq*(self: Game): seq[string] {.base.} =
-  @[]
+method set_possible_moves*(self: Game, moves: var seq[string]) {.base.} =
+  moves = @[]
 
 
-method possible_moves*(self: Game): OrderedTable[string, string] {.base.} =
+method set_possible_moves*(self: Game, moves: var OrderedTable[string, string]) {.base.} =
   raise newException(FieldError, "possible_moves() must be overridden")
 
 

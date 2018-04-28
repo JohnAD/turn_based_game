@@ -27,12 +27,13 @@ method setup*(self: GameOfThai21, players: seq[Player]) =
   self.default_setup(players)
   self.pile = 21
 
-method possible_moves(self: GameOfThai21): OrderedTable[string, string] =
+method set_possible_moves(self: GameOfThai21, moves: var OrderedTable[string, string]) =
   if self.pile==1:
-    return {"1": "Take One"}.toOrderedTable
+    moves = {"1": "Take One"}.toOrderedTable
   elif self.pile==2:
-    return {"1": "Take One", "2": "Take Two"}.toOrderedTable
-  return {"1": "Take One", "2": "Take Two", "3": "Take Three"}.toOrderedTable
+    moves = {"1": "Take One", "2": "Take Two"}.toOrderedTable
+  else:
+    moves = {"1": "Take One", "2": "Take Two", "3": "Take Three"}.toOrderedTable
 
 method make_move(self: GameOfThai21, move: string): string =
   var count = move.parseInt()
@@ -44,7 +45,6 @@ method determine_winner(self: GameOfThai21) =
     return
   if self.pile <= 0:
     self.winner_player_number = self.current_player_number
-  return
 
 # the following method is not _required_, but makes it nicer to read
 method status(self: GameOfThai21): string =

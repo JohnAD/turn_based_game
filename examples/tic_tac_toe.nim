@@ -33,12 +33,11 @@ method setup*(self: TicTacToe, players: seq[Player]) =
     empty, empty, empty    
   ]
 
-
-method possible_moves_seq(self: TicTacToe): seq[string] =
-  result = @[]
+method set_possible_moves*(self: TicTacToe, moves: var seq[string]) =
+  moves = @[]
   for i, x in self.board:
     if x==empty:
-      result.add($i)
+      moves.add($i)
 
 
 method make_move(self: TicTacToe, move: string): string =
