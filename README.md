@@ -2,20 +2,6 @@
 
 This framework encapsulates the critical information (rules) needed for playing or simulating a turn-based game.
 
-A turn-based game is any game
-
-* with two or more players,
-* where only one player plays at a time, and
-* the players take turns playing (it need not be round-robin, but that is the most common method).
-
-This library also assumes that
-
-* all the players are playing by the same rules,
-* a single "move" is made for each player's turn,
-    * (it can be complex set of actions involving many pieces, but a single _choice_ is made for that complex set)
-    * (the game can be written to allow "skip turn" as a valid "move"), and
-* the player's turn is over after the move is made.
-
 Some common turn-based games: Checkers, Reversi, Chess, Stratego, Connect 4.
 
 # Usage
