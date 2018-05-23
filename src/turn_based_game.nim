@@ -16,8 +16,8 @@ type
   Game* = ref object of RootObj
     player_count*: int
     players*: seq[Player]
-    current_player_number*: int
-    winner_player_number*: int
+    current_player_number*: int  # 1, 2, 3,... but 0 is never used
+    winner_player_number*: int   # 0=no winner; -1=stalemate; n=winner
 
   Player* = ref object of RootObj
     name*: string
@@ -46,12 +46,10 @@ method display(self: Player, msg: string) {.base.} =
     echo $msg
 
 
-method get_move(self: Player, game: Game): string {.base.} = 
+method get_move*(self: Player, game: Game): string {.base.} = 
   var move_list: seq[string] = @[]
   var descriptive_move_list: OrderedTable[string, string]
   var compact_description: bool = false
-  echo ""
-  echo "$#'s TURN".format([self.name])
   echo ""
   echo TAB & "Status:"
   echo indent(game.status(), 2, TAB)
@@ -92,7 +90,7 @@ method set_possible_moves*(self: Game, moves: var seq[string]) {.base.} =
 
 
 method set_possible_moves*(self: Game, moves: var OrderedTable[string, string]) {.base.} =
-  raise newException(FieldError, "possible_moves() must be overridden")
+  raise newException(FieldError, "set_possible_moves(OrderedTable) must be overridden")
 
 
 method current_player*(self: Game) : Player {.base.} =
@@ -100,7 +98,12 @@ method current_player*(self: Game) : Player {.base.} =
 
 
 method winning_player*(self: Game) : Player {.base.} =
-  self.players[self.winner_player_number - 1]
+  if self.winner_player_number > NO_WINNER_YET:
+    return self.players[self.winner_player_number - 1]
+  elif self.winner_player_number == NO_WINNER_YET:
+    return Player(name: "NO WINNER YET")
+  else:
+    return Player(name: "STALEMATE OR TIE")
 
 
 method next_player_number*(self: Game): int {.base.} =
@@ -130,8 +133,16 @@ method determine_winner(self: Game) {.base.} =
   raise newException(FieldError, "determine_winner() must be overridden")
 
 
-method scoring*(self: Game): int {.base.} =
+method scoring*(self: Game): float {.base.} =
   raise newException(FieldError, "scoring() must be overridden (if used)")
+
+
+method get_state*(self: Game): string {.base.} =
+  raise newException(FieldError, "get_state() must be overridden (if used)")
+
+
+method restore_state*(self: Game, state: string): void  {.base.} =
+  raise newException(FieldError, "restore_state() must be overridden (if used)")
 
 
 method setup*(self: Game, players: seq[Player]) {.base.} =
@@ -146,15 +157,15 @@ method default_setup*(self: Game, players: seq[Player]) {.base.} =
 
 
 method play*(self: Game) : seq[string] {.base discardable.} = 
-  var history: seq[string] = @[]
+  result = @[]
   var move: string = ""
   while not self.is_over():
-    # when declaredInScope(self.status):
-    #   self.current_player.display(self.status())
+    self.current_player.display("-----------------")
+    self.current_player.display("$1's Turn".format(self.current_player.name))
     move = self.current_player.get_move(self)
     if move.isNil:
-      return history
-    history.add(move)
+      break
+    result.add(move)
     self.current_player.display("")
     self.current_player.display(TAB & self.make_move(move))
     self.determine_winner()
@@ -164,5 +175,5 @@ method play*(self: Game) : seq[string] {.base discardable.} =
         self.current_player.display("STALEMATE.")
       else:
         self.current_player.display("WINNER IS $#".format([self.winning_player.name]))
-      return history
+      break
     self.current_player_number = self.next_player_number()
