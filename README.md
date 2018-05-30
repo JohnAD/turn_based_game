@@ -96,6 +96,13 @@ Greater documentation is being built at the wiki on this repository.
 
 Visit <https://github.com/JohnAD/turn_based_game/wiki>
 
+# Videos
+
+The following two videos (to be watched in order), demonstrate how to use this library and the 'turn_based_game' library:
+
+1. Using "turn_based_game": https://www.youtube.com/watch?v=u6w8vT-oBjE
+2. Using "negamax": https://www.youtube.com/watch?v=op4Mcgszshk
+
 # Credit
 
 The code for this engine mimics that written in Python at the EasyAI library located at <https://github.com/Zulko/easyAI>. That library contains both the game rule engine (called TwoPlayerGame) as well as a variety of AI algorithms to play as game players, such as Negamax.

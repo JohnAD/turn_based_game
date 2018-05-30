@@ -70,8 +70,13 @@ method get_move*(self: Player, game: Game): string {.base.} =
     else:
       for key, value in descriptive_move_list.pairs():
         echo TAB & TAB & "[$key]: $value".format("key", key, "value", value)
-    stdout.write TAB & "Enter move (or 'quit'): "
-    var response = readLine(stdin)
+    echo TAB & "Enter move (or 'quit'): "
+    var response: string
+    when defined(js):
+      # for some reason, generating a raise does not work.
+      response = "When compiling for Javascript, you cannot use this procedure."
+    else:
+      response = readLine(stdin)
     if response in move_list:
       return response
     if response == "quit":
