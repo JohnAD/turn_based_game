@@ -1,6 +1,6 @@
 # Package
 
-version       = "1.1.2"
+version       = "1.1.3"
 author        = "John Dupuy"
 description   = "Game rules framework for turn-based games"
 license       = "MIT"
