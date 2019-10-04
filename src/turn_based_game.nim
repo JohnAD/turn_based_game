@@ -219,7 +219,7 @@ method get_move*(self: Player, game: Game): string {.base.} =
     if response in move_list:
       return response
     if response == "quit":
-      return nil
+      return ""
     echo TAB & "BAD ENTRY. Try again."
 
 # ######################################
@@ -365,7 +365,7 @@ method play*(self: Game) : seq[string] {.base discardable.} =
     self.current_player.display("-----------------")
     self.current_player.display("$1's Turn".format(self.current_player.name))
     move = self.current_player.get_move(self)
-    if move.isNil:
+    if move == "":
       break
     result.add(move)
     self.current_player.display("")
