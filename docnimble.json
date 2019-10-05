@@ -1,0 +1,9 @@
+{
+  "name": "turn_based_game",
+  "purpose": "library",
+  "doc_dir": "docs/",
+  "rst_dir": "rst/",
+  "doc_src_dir": "",
+  "nimble_file": "turn_based_game.nimble",
+  "files_to_ignore": []
+}
