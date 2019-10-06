@@ -1,6 +1,6 @@
 Introduction to turn_based_game
 ==============================================================================
-ver 1.1.3
+ver 1.1.4
 
 .. image:: https://raw.githubusercontent.com/yglukhov/nimble-tag/master/nimble.png
    :height: 34

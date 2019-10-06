@@ -29,10 +29,13 @@ Game
     
     For example:
     
+    
     .. code:: nim
+    
         type
           GameOfThai21 = ref object of Game
             pile*: int
+    
 
 
 .. _Player.type:
@@ -45,7 +48,7 @@ Player
           name*: string
 
 
-    source line: `156 <../src/turn_based_game.nim#L156>`__
+    source line: `159 <../src/turn_based_game.nim#L159>`__
 
     The default player object. If used directly, the Player object
     is simply the end user playing the game from the OS's text console.
@@ -70,7 +73,7 @@ current_player
 
         method current_player*(self: Game) : Player {.base.} =
 
-    source line: `244 <../src/turn_based_game.nim#L244>`__
+    source line: `247 <../src/turn_based_game.nim#L247>`__
 
     Return the Player whose turn it is to play
 
@@ -83,7 +86,7 @@ default_setup
 
         method default_setup*(self: Game, players: seq[Player]) {.base.} =
 
-    source line: `340 <../src/turn_based_game.nim#L340>`__
+    source line: `348 <../src/turn_based_game.nim#L348>`__
 
     This is the default setup for Game. You are welcome to call it when writing
     the ``setup`` method.
@@ -98,6 +101,27 @@ default_setup
         self.winner_player_number = 0
 
 
+.. _determine_winner.e:
+determine_winner
+---------------------------------------------------------
+
+    .. code:: nim
+
+        method determine_winner*(self: Game) {.base.} =
+
+    source line: `303 <../src/turn_based_game.nim#L303>`__
+
+    Given the current state of the game, determine who the winner is, if there
+    is a winner.
+    
+    If running a game manually (avoiding the .play method), it is expected that
+    this method is run BEFORE the turn finishes. If a winning condition is detected,
+    the current player is generally assumed to be the winner that caused that
+    condition.
+    
+    See: https://github.com/JohnAD/turn_based_game/wiki/Game-Object-Methods#determine_winner
+
+
 .. _finish_turn.e:
 finish_turn
 ---------------------------------------------------------
@@ -106,7 +130,7 @@ finish_turn
 
         method finish_turn*(self: Game) {.base.} =
 
-    source line: `266 <../src/turn_based_game.nim#L266>`__
+    source line: `269 <../src/turn_based_game.nim#L269>`__
 
     Cleanup anything in the current turn and start the next turn.
     
@@ -122,7 +146,7 @@ get_move
 
         method get_move*(self: Player, game: Game): string {.base.} =
 
-    source line: `188 <../src/turn_based_game.nim#L188>`__
+    source line: `191 <../src/turn_based_game.nim#L191>`__
 
 
 
@@ -134,7 +158,7 @@ get_state
 
         method get_state*(self: Game): string {.base.} =
 
-    source line: `316 <../src/turn_based_game.nim#L316>`__
+    source line: `324 <../src/turn_based_game.nim#L324>`__
 
     Returns a string that is encoded to represent the current game, including who
     the current player is.
@@ -151,7 +175,7 @@ is_over
 
         method is_over*(self: Game): bool {.base.} =
 
-    source line: `285 <../src/turn_based_game.nim#L285>`__
+    source line: `288 <../src/turn_based_game.nim#L288>`__
 
     Return whether or not the game is over.
 
@@ -164,7 +188,7 @@ make_move
 
         method make_move*(self: Game, move: string): string {.base.} =
 
-    source line: `274 <../src/turn_based_game.nim#L274>`__
+    source line: `277 <../src/turn_based_game.nim#L277>`__
 
     Given a move (from ``set_possible_moves``), apply that move
     to the game.
@@ -183,9 +207,9 @@ next_player_number
 
         method next_player_number*(self: Game): int {.base.} =
 
-    source line: `261 <../src/turn_based_game.nim#L261>`__
+    source line: `264 <../src/turn_based_game.nim#L264>`__
 
-    Return the index to the next player.
+    Return the number to the next player.
 
 
 .. _play.e:
@@ -196,7 +220,7 @@ play
 
         method play*(self: Game) : seq[string] {.base discardable.} =
 
-    source line: `359 <../src/turn_based_game.nim#L359>`__
+    source line: `367 <../src/turn_based_game.nim#L367>`__
 
     Start and run the game. Unless this method is overriden, this plays
     the game from the text console.
@@ -210,7 +234,7 @@ restore_state
 
         method restore_state*(self: Game, state: string): void  {.base.} =
 
-    source line: `325 <../src/turn_based_game.nim#L325>`__
+    source line: `333 <../src/turn_based_game.nim#L333>`__
 
     Decodes the string to reset the game to the state encoded in the string.
     
@@ -226,7 +250,7 @@ scoring
 
         method scoring*(self: Game): float {.base.} =
 
-    source line: `308 <../src/turn_based_game.nim#L308>`__
+    source line: `316 <../src/turn_based_game.nim#L316>`__
 
     Return a score reflecting the advantage to the current player.
     
@@ -240,21 +264,9 @@ set_possible_moves
 
     .. code:: nim
 
-        method set_possible_moves*(self: Game, moves: var OrderedTable[string, string]) {.base.}
-
-    source line: `173 <../src/turn_based_game.nim#L173>`__
-
-
-
-.. _set_possible_moves.e:
-set_possible_moves
----------------------------------------------------------
-
-    .. code:: nim
-
         method set_possible_moves*(self: Game, moves: var OrderedTable[string, string]) {.base.} =
 
-    source line: `238 <../src/turn_based_game.nim#L238>`__
+    source line: `241 <../src/turn_based_game.nim#L241>`__
 
     Set the current possible moves of the game.
     See https://github.com/JohnAD/turn_based_game/wiki/Game-Object-Methods#set_possible_moves
@@ -266,21 +278,9 @@ set_possible_moves
 
     .. code:: nim
 
-        method set_possible_moves*(self: Game, moves: var seq[string]) {.base.}
-
-    source line: `174 <../src/turn_based_game.nim#L174>`__
-
-
-
-.. _set_possible_moves.e:
-set_possible_moves
----------------------------------------------------------
-
-    .. code:: nim
-
         method set_possible_moves*(self: Game, moves: var seq[string]) {.base.} =
 
-    source line: `232 <../src/turn_based_game.nim#L232>`__
+    source line: `235 <../src/turn_based_game.nim#L235>`__
 
     Set the current possible moves of the game.
     See https://github.com/JohnAD/turn_based_game/wiki/Game-Object-Methods#set_possible_moves
@@ -294,7 +294,7 @@ setup
 
         method setup*(self: Game, players: seq[Player]) {.base.} =
 
-    source line: `333 <../src/turn_based_game.nim#L333>`__
+    source line: `341 <../src/turn_based_game.nim#L341>`__
 
     Setup the board; resetting all state for a new game.
     
@@ -307,21 +307,9 @@ status
 
     .. code:: nim
 
-        method status*(self: Game): string {.base.}
-
-    source line: `175 <../src/turn_based_game.nim#L175>`__
-
-
-
-.. _status.e:
-status
----------------------------------------------------------
-
-    .. code:: nim
-
         method status*(self: Game): string {.base.} =
 
-    source line: `290 <../src/turn_based_game.nim#L290>`__
+    source line: `293 <../src/turn_based_game.nim#L293>`__
 
     Return a status of the game overrall. By default, it simply returns either
     "game is over" or "game is active". Override this method for something
@@ -336,7 +324,7 @@ winning_player
 
         method winning_player*(self: Game) : Player {.base.} =
 
-    source line: `249 <../src/turn_based_game.nim#L249>`__
+    source line: `252 <../src/turn_based_game.nim#L252>`__
 
     Return the Player who is the winner.
     If there is no winner, a "false" Player is returned with the name

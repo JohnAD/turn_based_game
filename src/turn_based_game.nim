@@ -144,10 +144,13 @@ type
     ## 
     ## For example:
     ## 
+    ##
     ## .. code:: nim
+    ##
     ##     type
     ##       GameOfThai21 = ref object of Game
     ##         pile*: int
+    ##
     player_count*: int
     players*: seq[Player]
     current_player_number*: int  # 1, 2, 3,... but 0 is never used
@@ -170,9 +173,9 @@ const
 # the following prototypes are needed to allow mutual recursion of methods
 #   It is properly defined later.
 # method possible_moves_seq*(self: Game): seq[string] {.base.}
-method set_possible_moves*(self: Game, moves: var OrderedTable[string, string]) {.base.}
-method set_possible_moves*(self: Game, moves: var seq[string]) {.base.}
-method status*(self: Game): string {.base.}
+method set_possible_moves*(self: Game, moves: var OrderedTable[string, string]) {.base.}  #SKIP!
+method set_possible_moves*(self: Game, moves: var seq[string]) {.base.}  #SKIP!
+method status*(self: Game): string {.base.}  #SKIP!
 
 # ######################################
 #
@@ -259,7 +262,7 @@ method winning_player*(self: Game) : Player {.base.} =
 
 
 method next_player_number*(self: Game): int {.base.} =
-  ## Return the index to the next player.
+  ## Return the number to the next player.
   (self.current_player_number %% self.player_count) + 1
 
 
@@ -297,9 +300,14 @@ method status*(self: Game): string {.base.} =
     return "game is active"
 
 
-method determine_winner(self: Game) {.base.} =
+method determine_winner*(self: Game) {.base.} =
   ## Given the current state of the game, determine who the winner is, if there
   ## is a winner.
+  ## 
+  ## If running a game manually (avoiding the .play method), it is expected that
+  ## this method is run BEFORE the turn finishes. If a winning condition is detected,
+  ## the current player is generally assumed to be the winner that caused that
+  ## condition.
   ## 
   ## See: https://github.com/JohnAD/turn_based_game/wiki/Game-Object-Methods#determine_winner
   raise newException(FieldError, "determine_winner() must be overridden")
