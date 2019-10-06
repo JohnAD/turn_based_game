@@ -1,0 +1,26 @@
+Usage	turn_based_game.html#usage	 Usage	
+Quick Example	turn_based_game.html#quick-example	 Quick Example	
+Documentation	turn_based_game.html#documentation	 Documentation	
+Videos	turn_based_game.html#videos	 Videos	
+Credit	turn_based_game.html#credit	 Credit	
+Game	turn_based_game.html#Game	turn_based_game: Game	
+Player	turn_based_game.html#Player	turn_based_game: Player	
+STALEMATE	turn_based_game.html#STALEMATE	turn_based_game: STALEMATE	
+NO_WINNER_YET	turn_based_game.html#NO_WINNER_YET	turn_based_game: NO_WINNER_YET	
+get_move	turn_based_game.html#get_move.e,Player,Game	turn_based_game: get_move(self: Player; game: Game): string	
+set_possible_moves	turn_based_game.html#set_possible_moves.e,Game,seq[T][string]	turn_based_game: set_possible_moves(self: Game; moves: var seq[string])	
+set_possible_moves	turn_based_game.html#set_possible_moves.e,Game,OrderedTable[string,string]	turn_based_game: set_possible_moves(self: Game; moves: var OrderedTable[string, string])	
+current_player	turn_based_game.html#current_player.e,Game	turn_based_game: current_player(self: Game): Player	
+winning_player	turn_based_game.html#winning_player.e,Game	turn_based_game: winning_player(self: Game): Player	
+next_player_number	turn_based_game.html#next_player_number.e,Game	turn_based_game: next_player_number(self: Game): int	
+finish_turn	turn_based_game.html#finish_turn.e,Game	turn_based_game: finish_turn(self: Game)	
+make_move	turn_based_game.html#make_move.e,Game,string	turn_based_game: make_move(self: Game; move: string): string	
+is_over	turn_based_game.html#is_over.e,Game	turn_based_game: is_over(self: Game): bool	
+status	turn_based_game.html#status.e,Game	turn_based_game: status(self: Game): string	
+determine_winner	turn_based_game.html#determine_winner.e,Game	turn_based_game: determine_winner(self: Game)	
+scoring	turn_based_game.html#scoring.e,Game	turn_based_game: scoring(self: Game): float	
+get_state	turn_based_game.html#get_state.e,Game	turn_based_game: get_state(self: Game): string	
+restore_state	turn_based_game.html#restore_state.e,Game,string	turn_based_game: restore_state(self: Game; state: string): void	
+setup	turn_based_game.html#setup.e,Game,seq[T][Player]	turn_based_game: setup(self: Game; players: seq[Player])	
+default_setup	turn_based_game.html#default_setup.e,Game,seq[T][Player]	turn_based_game: default_setup(self: Game; players: seq[Player])	
+play	turn_based_game.html#play.e,Game	turn_based_game: play(self: Game): seq[string]	

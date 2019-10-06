@@ -1,6 +1,8 @@
 {
   "name": "turn_based_game",
   "purpose": "library",
+  "repo_host_readme_url": "https://github.com/JohnAD/turn_based_game",
+  "repo_host_docs_url": "https://github.com/JohnAD/turn_based_game/blob/master/docs/",
   "doc_dir": "docs/",
   "rst_dir": "rst/",
   "doc_src_dir": "",

@@ -135,7 +135,7 @@ variety of AI algorithms to play as game players, such as Negamax.
 Table Of Contents
 =================
 
-1. `Introduction to turn_based_game <docs/index.rst>`__
+1. `Introduction to turn_based_game <https://github.com/JohnAD/turn_based_game>`__
 2. Appendices
 
-    A. `turn_based_game Reference <docs/turn_based_game-ref.rst>`__
+    A. `turn_based_game Reference <https://github.com/JohnAD/turn_based_game/blob/master/docs/turn_based_game-ref.rst>`__
