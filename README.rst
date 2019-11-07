@@ -1,11 +1,18 @@
 Introduction to turn_based_game
 ==============================================================================
-ver 1.1.5
+ver 1.1.6
 
 .. image:: https://raw.githubusercontent.com/yglukhov/nimble-tag/master/nimble.png
    :height: 34
    :width: 131
    :alt: nimble
+   :target: https://nimble.directory/pkg/turnbasedgame
+
+.. image:: https://repo.support/img/rst-banner.png
+   :height: 34
+   :width: 131
+   :alt: repo.support
+   :target: https://repo.support/gh/JohnAD/turn_based_game
 
 This framework encapsulates the critical information (rules) needed for
 playing or simulating a turn-based game.

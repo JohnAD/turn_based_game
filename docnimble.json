@@ -3,6 +3,8 @@
   "purpose": "library",
   "repo_host_readme_url": "https://github.com/JohnAD/turn_based_game",
   "repo_host_docs_url": "https://github.com/JohnAD/turn_based_game/blob/master/docs/",
+  "nimble_url": "https://nimble.directory/pkg/turnbasedgame",
+  "repo_support_url": "https://repo.support/gh/JohnAD/turn_based_game",
   "doc_dir": "docs/",
   "rst_dir": "rst/",
   "doc_src_dir": "",

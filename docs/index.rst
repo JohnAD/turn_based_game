@@ -1,6 +1,6 @@
 Introduction to turn_based_game
 ==============================================================================
-ver 1.1.5
+ver 1.1.6
 
 This framework encapsulates the critical information (rules) needed for
 playing or simulating a turn-based game.

@@ -375,6 +375,8 @@ method play*(self: Game) : seq[string] {.base discardable.} =
     move = self.current_player.get_move(self)
     if move == "":
       break
+    self.current_player.display("")
+    self.current_player.display("$1 chose \"$2\"".format(self.current_player.name, move))
     result.add(move)
     self.current_player.display("")
     self.current_player.display(TAB & self.make_move(move))
